@@ -1,13 +1,18 @@
-import { Modal, Form, Input } from "antd";
 import { useEffect } from "react";
+import { Modal, Form, Input } from "antd";
 import { useCompanies } from "../../hooks/useComaies";
+import { CompanyModalProps } from "../../types/companies";
 
-const CompanyModal = ({ visible, onClose, editingCompany }:any) => {
+const CompanyModal:React.FC<CompanyModalProps> = ({ visible, onClose, editingCompany }) => {
   const { createCompany, updateCompany } = useCompanies();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue(editingCompany || { name: "", count: 0 });
+    if (editingCompany) {
+      form.setFieldsValue(editingCompany);
+    } else {
+      form.resetFields();
+    }
   }, [editingCompany, form]);
 
   const handleSubmit = () => {
@@ -16,6 +21,7 @@ const CompanyModal = ({ visible, onClose, editingCompany }:any) => {
         updateCompany.mutate({ ...editingCompany, ...values });
       } else {
         createCompany.mutate(values);
+        
       }
       onClose();
     });
@@ -27,12 +33,16 @@ const CompanyModal = ({ visible, onClose, editingCompany }:any) => {
       open={visible}
       onOk={handleSubmit}
       onCancel={onClose}
+      okText={editingCompany ? "Обновить" : "Добавить"}
+      cancelText="Отмена"
+      width={400}
+      centered
     >
       <Form form={form} layout="vertical">
-        <Form.Item name="name" label="Название компании" rules={[{ required: true }]}>
+        <Form.Item name="name" label="Название" rules={[{ required: true, message: "Введите название" }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="count" label="Количество сотрудников" rules={[{ required: true }]}>
+        <Form.Item name="count" label="Сотрудники" rules={[{ required: true, message: "Введите количество" }]}>
           <Input type="number" />
         </Form.Item>
       </Form>

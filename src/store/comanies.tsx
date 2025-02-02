@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { CompaniesTs } from "../types/companies";
 
 export const CompaniesStore = create<CompaniesTs>((set) => ({
+    id:'',
     name:'',
     count:0,
     setName: (val: string) => set({ name: val }),

@@ -6,6 +6,8 @@ import { AddCompApi, DeleteCompApi, EditCompApi, GetAll } from "../api/api";
 export const companyService = {
   getAll: async () => {
     const res = await axios.get(GetAll, config);
+    console.log(res.data);
+    
     return res.data;
   },
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import {SignUpTs } from "../types/SignUp";
 
-const authStore = create<SignUpTs>((set) => ({
+const SignUpStore = create<SignUpTs>((set) => ({
     fullName: '',
     login: '',
     password: '',
@@ -11,4 +11,4 @@ const authStore = create<SignUpTs>((set) => ({
     setPassword: (val) => set((state) => ({ ...state, password: val })),
   }));
   
-  export default authStore;
+  export default SignUpStore;

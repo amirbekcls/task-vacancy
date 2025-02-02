@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import AuthPage from './authpage';
 import { RegApi } from '../api/api';
 import { RegisterData } from '../types/SignUp';
+import SignUpStore from '../store/signup';
 
 const mutationFn = async (userData: RegisterData) => {
   const response = await axios.post(RegApi, userData);
@@ -13,25 +13,21 @@ const mutationFn = async (userData: RegisterData) => {
 
 const Register = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<RegisterData>({
-    fullName: '',
-    login: '',
-    password: '',
-  });
+  const {fullName,login,password,setFullName,setLogin,setPassword} = SignUpStore()
 
   const { mutate, isError, error, isSuccess } = useMutation({
     mutationFn,
     onSuccess: () => {
       navigate('/login');
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       console.error('Registration failed:', err);
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(userData);
+    mutate({fullName,login,password});
   };
 
   return (
@@ -45,9 +41,8 @@ const Register = () => {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder="Введите Ф.И.О"
-              value={userData.fullName}
-              onChange={(e) =>
-                setUserData({ ...userData, fullName: e.target.value })
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value )
               }
             />
           </div>
@@ -58,10 +53,9 @@ const Register = () => {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder="Введите логин"
-              value={userData.login}
-              onChange={(e) =>
-                setUserData({ ...userData, login: e.target.value })
-              }
+              value={login}
+              onChange={(e) => setLogin(e.target.value )}
+
             />
           </div>
 
@@ -71,10 +65,9 @@ const Register = () => {
               type="password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder="Введите пароль"
-              value={userData.password}
-              onChange={(e) =>
-                setUserData({ ...userData, password: e.target.value })
-              }
+              value={password}
+              onChange={(e) => setPassword(e.target.value )}
+
             />
           </div>
 

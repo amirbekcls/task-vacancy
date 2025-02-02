@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { message } from "antd";
 import { companyService } from "../Services/companiesServecis";
+import { CompaniesStore } from "../store/comanies";
 
 export const useCompanies = () => {
   const queryClient = useQueryClient();
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["companies"],
     queryFn: companyService.getAll,
@@ -14,7 +14,9 @@ export const useCompanies = () => {
     mutationFn: companyService.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["companies"] });
-      message.success("Компания добавлена");
+  
+      message.success("Компания добавлена"); 
+      
     },
   });
 
