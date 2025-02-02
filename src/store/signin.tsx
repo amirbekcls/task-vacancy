@@ -1,12 +1,8 @@
 import { create } from "zustand";
+import { LoginData } from "../types/signin";
 
 // Store'da LoginData turini aniqlaymiz
-export interface LoginData {
-  login: string;
-  password: string;
-  setLogin: (val: string) => void;
-  setPassword: (val: string) => void;
-}
+
 
 export const useSignInStore = create<LoginData>((set) => ({
   login: '',
